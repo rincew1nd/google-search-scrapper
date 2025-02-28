@@ -1,0 +1,21 @@
+﻿# Use an official Python runtime as a parent image
+FROM python:3.9-slim
+
+# Python log out
+ENV PYTHONUNBUFFERED=1
+ENV HEADLESS=True
+
+# Setup work directory and copy project
+WORKDIR /app
+COPY . /app
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Playwright browsers (Chromium or Firefox)
+RUN playwright install firefox --with-deps
+
+# Expose the port Flask is running on
+EXPOSE 5000
+
+CMD ["python", "app.py"]

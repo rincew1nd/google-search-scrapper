@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Page</title>
+</head>
+<body>
+<h1>Search</h1>
+<form id="search-form">
+    <input type="text" name="query" placeholder="Enter search term">
+    <button type="submit">Search</button>
+</form>
+
+<h2>Results</h2>
+<div id="results"></div>
+
+<script>
+    // Listen for form submission
+    document.getElementById('search-form').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+        const formData = new FormData(this);
+        fetch('/search', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = ''; // Clear previous results
+
+            if (data.length === 0) {
+                resultsDiv.innerHTML = '<p>No results found.</p>';
+            } else {
+                const ul = document.createElement('ul');
+                data.forEach(item => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = item.link;
+                    a.textContent = item.title;
+                    li.appendChild(a);
+                    ul.appendChild(li);
+                });
+                resultsDiv.appendChild(ul);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+</body>
+</html>

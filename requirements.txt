@@ -1,0 +1,5 @@
+﻿Flask
+playwright
+playwright-stealth
+beautifulsoup4
+gunicorn

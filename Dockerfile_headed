@@ -1,0 +1,25 @@
+﻿# Use an official Python runtime as a parent image
+FROM python:3.9-slim
+
+# Python log out
+ENV PYTHONUNBUFFERED=1
+ENV HEADLESS=False
+
+# Setup work directory and copy project
+WORKDIR /app
+COPY . /app
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Playwright browsers (Chromium or Firefox)
+RUN apt-get update -y && \
+        apt-get install --no-install-recommends -y xvfb xauth && \
+        rm -rf /var/lib/apt/lists/*
+
+RUN playwright install chromium --with-deps
+    
+# Expose the port Flask is running on
+EXPOSE 5000
+
+CMD ["/bin/sh", "-c", "/usr/bin/xvfb-run -a python app.py"]

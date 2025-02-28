@@ -1,0 +1,15 @@
+﻿version: '3.8'
+
+services:
+  google-scrapper-headed:
+    build:
+      context: .
+      dockerfile: Dockerfile_headed
+    ports:
+      - "5394:5394"
+    networks:
+      - google-scrapper-net
+
+networks:
+  google-scrapper-net:
+    driver: bridge
