@@ -8,6 +8,9 @@
 
 - Local run
 ```
-set HEADLESS=True && python app.py
-set HEADLESS=False && python app.py
+set HEADLESS=True && python run.py
+set HEADLESS=False && python run.py
 ```
+
+- Unit tests
+```python -m unittest discover```

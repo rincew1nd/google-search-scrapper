@@ -22,4 +22,4 @@ RUN playwright install chromium --with-deps
 # Expose the port Flask is running on
 EXPOSE 5000
 
-CMD ["/bin/sh", "-c", "/usr/bin/xvfb-run -a python app.py"]
+CMD ["/bin/sh", "-c", "/usr/bin/xvfb-run -a python run.py"]
