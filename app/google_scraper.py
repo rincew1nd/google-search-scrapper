@@ -16,7 +16,7 @@ class GoogleScraper:
         page.wait_for_load_state("domcontentloaded")
         page_content = page.content()
         page.close()
-        
+            
         return self.parse_content(page_content)
     
     @staticmethod
@@ -30,4 +30,5 @@ class GoogleScraper:
                 output.append({'title': title, 'link': link})
             except Exception as e:
                 print(f'Error - {e}')
+            
         return output

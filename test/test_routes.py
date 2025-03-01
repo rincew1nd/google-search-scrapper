@@ -1,7 +1,8 @@
 ﻿import os
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from app.flask_app import create_app
+from app.file_manager import save_file
 
 class RoutesTests(unittest.TestCase):
     def setUp(self):
@@ -23,11 +24,13 @@ class RoutesTests(unittest.TestCase):
         actual_html = response.data.decode('utf-8-sig').strip()
         self.assertMultiLineEqual(actual_html, expected_html)
 
-    def test_search_route(self):
+    @patch('app.flask_routes.save_file')
+    def test_search_route(self, mock_save_file):
+        mock_save_file.return_value = None
         response = self.client.post('/search', data={'query': 'dummy'})
         self.assertEqual(response.status_code, 200)
         data = response.get_json()
-        self.assertEqual(data, [{'title': 'Test Title', 'link': 'http://example.com'}])
+        self.assertEqual(data, {'filename': 'dummy.json', 'results': [{'link': 'http://example.com', 'title': 'Test Title'}]})
         self.google_scrapper_mock.search.assert_called_once_with('dummy')
 
 if __name__ == '__main__':

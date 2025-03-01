@@ -27,12 +27,17 @@
         .then(data => {
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = ''; // Clear previous results
-
-            if (data.length === 0) {
+            
+            if (data.results.length === 0) {
                 resultsDiv.innerHTML = '<p>No results found.</p>';
             } else {
+                const filelink = document.createElement('a');
+                filelink.href = `/history/${data.filename}`;
+                filelink.textContent = 'Download results as JSON';
+                resultsDiv.appendChild(filelink);
+            
                 const ul = document.createElement('ul');
-                data.forEach(item => {
+                data.results.forEach(item => {
                     const li = document.createElement('li');
                     const a = document.createElement('a');
                     a.href = item.link;

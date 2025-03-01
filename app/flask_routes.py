@@ -1,4 +1,6 @@
-﻿from flask import render_template, request, jsonify
+﻿from flask import render_template, request, jsonify, send_file
+from app.file_manager import save_file
+
 
 def register_routes(app, google_searcher):
     @app.route('/')
@@ -9,4 +11,13 @@ def register_routes(app, google_searcher):
     def search():
         query = request.form.get('query', '')
         results = google_searcher.search(query)
-        return jsonify(results)
+        filename = f"{query.replace(' ', '_')}.json"
+        save_file(results, filename)
+        return jsonify({ 'results': results, 'filename': filename })    
+
+    @app.route('/history/<path:filename>', methods=['GET'])
+    def download_file(filename):
+        try:
+            return send_file(f'history/{filename}', as_attachment=True)
+        except FileNotFoundError:
+            return jsonify({'error': 'File not found.'}), 404
